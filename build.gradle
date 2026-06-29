@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+group = 'ru.basted'
+version = '0.1-alpha'
+
+repositories {
+    mavenCentral()
+}
+
+def seleniumVersion = System.getProperty('selenium.version', '4.18.1')
+def driverVersion   = System.getProperty('driverManager.version', '5.7.0')
+def junitBomVersion = System.getProperty('junitBom.version', '5.10.2')
+def assertjVersion  = System.getProperty('assertj.version', '3.25.3')
+def slf4jVersion    = System.getProperty('slf4j.version', '2.0.17')
+
+dependencies {
+    testImplementation "org.seleniumhq.selenium:selenium-java:${seleniumVersion}"
+
+    testImplementation platform("org.junit:junit-bom:${junitBomVersion}")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    testImplementation "io.github.bonigarcia:webdrivermanager:${driverVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jVersion}"
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
+}
