@@ -18,11 +18,7 @@ public class SearchPage extends BasePage {
     }
 
     public boolean isSearchPageOpened() {
-        try {
-            return webDriverWait.until(ExpectedConditions.urlContains("/search"));
-        } catch (Exception ex) {
-            return false;
-        }
+        return isPageOpened("/search");
     }
 
     public boolean searchAndVerifyResults(String query) {

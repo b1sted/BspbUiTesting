@@ -22,11 +22,7 @@ public class CurrencyPage extends BasePage {
     }
 
     public boolean isCurrencyPageOpened() {
-        try {
-            return webDriverWait.until(ExpectedConditions.urlContains("/finance/exchange"));
-        } catch (Exception ex) {
-            return false;
-        }
+        return isPageOpened("/finance/exchange");
     }
 
     public boolean unfoldQuestionsAndVerify() {

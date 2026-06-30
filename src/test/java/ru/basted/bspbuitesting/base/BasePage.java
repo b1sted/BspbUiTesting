@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -29,6 +30,14 @@ public class BasePage {
                     .moveToElement(webElement)
                     .click()
                     .perform();
+        }
+    }
+
+    public boolean isPageOpened(String fraction) {
+        try {
+            return webDriverWait.until(ExpectedConditions.urlContains(fraction));
+        } catch (TimeoutException ex) {
+            return false;
         }
     }
 }
