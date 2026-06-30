@@ -9,7 +9,7 @@ repositories {
     mavenCentral()
 }
 
-def seleniumVersion = System.getProperty('selenium.version', '4.44.0')
+def seleniumVersion = System.getProperty('selenium.version', '4.45.0')
 def junitBomVersion = System.getProperty('junitBom.version', '6.0.3')
 def assertjVersion  = System.getProperty('assertj.version', '3.27.7')
 def slf4jVersion    = System.getProperty('slf4j.version', '2.0.17')
