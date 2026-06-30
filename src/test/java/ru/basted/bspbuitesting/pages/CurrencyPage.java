@@ -30,8 +30,7 @@ public class CurrencyPage extends BasePage {
     }
 
     public boolean unfoldQuestionsAndVerify() {
-        WebElement questionsButton = webDriverWait.until(ExpectedConditions.elementToBeClickable(questionsLocator));
-        clickOnElement(questionsButton);
+        clickOnElement(questionsLocator);
 
         try {
             webDriverWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(targetAccordionButtonsLocator));
