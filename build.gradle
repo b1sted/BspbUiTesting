@@ -19,6 +19,7 @@ dependencies {
 
     testImplementation platform("org.junit:junit-bom:${junitBomVersion}")
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.platform:junit-platform-suite'
 
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
 
