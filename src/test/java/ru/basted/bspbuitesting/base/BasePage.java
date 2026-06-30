@@ -1,4 +1,4 @@
-package ru.basted.bspbuitesting.pages;
+package ru.basted.bspbuitesting.base;
 
 import java.time.Duration;
 

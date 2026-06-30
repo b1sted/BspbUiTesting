@@ -7,6 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import ru.basted.bspbuitesting.base.BasePage;
+
 public class SearchPage extends BasePage {
     private final By searchBoxLocator = By.cssSelector("input[placeholder]");
     private final By searchStatusLocator = By.xpath("//p[contains(normalize-space(), 'Найдено')]");
