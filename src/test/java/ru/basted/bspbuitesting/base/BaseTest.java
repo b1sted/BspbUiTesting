@@ -12,6 +12,7 @@ public class BaseTest {
     public void setup() {
         webDriver = new ChromeDriver();
         webDriver.manage().window().maximize();
+        webDriver.get("https://bspb.ru");
     }
 
     @AfterEach
