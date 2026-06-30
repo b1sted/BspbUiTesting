@@ -10,8 +10,6 @@ import ru.basted.bspbuitesting.pages.SearchPage;
 public class SearchTest extends BaseTest {
     @Test
     public void testSearch() {
-        webDriver.get("https://bspb.ru");
-
         MainPage mainPage = new MainPage(webDriver);
         SearchPage searchPage = new SearchPage(webDriver);
 
