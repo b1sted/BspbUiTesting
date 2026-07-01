@@ -14,10 +14,11 @@ public class SearchTest extends BaseTest {
         SearchPage searchPage = new SearchPage(webDriver);
 
         mainPage.clickSearchButton();
-        Assertions.assertTrue(searchPage.isSearchPageOpened(),
-                "Страница поиска не была открыта!");
+        boolean isSearchPageOpened = searchPage.isSearchPageOpened();
+        Assertions.assertTrue(isSearchPageOpened, "Страница поиска не была открыта!");
 
-        Assertions.assertTrue(searchPage.searchAndVerifyResults("ВЭД"),
+        boolean isSearchSuccessful = searchPage.searchAndVerifyResults("ВЭД");
+        Assertions.assertTrue(isSearchSuccessful,
                 "Поиск не удался: счетчик результатов поиска так и остался равным нулю!");
     }
 }
