@@ -1,6 +1,8 @@
 package ru.basted.bspbuitesting.pages;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -25,23 +27,26 @@ public class CurrencyPage extends BasePage {
         return isPageOpened("/finance/exchange");
     }
 
-    public boolean unfoldQuestionsAndVerify() {
+    public Map<Integer, Boolean> unfoldQuestionsAndVerify() {
+        Map<Integer, Boolean> results = new HashMap<>();
         clickOnElement(questionsLocator);
 
-        try {
-            webDriverWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(targetAccordionButtonsLocator));
+        webDriverWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(targetAccordionButtonsLocator));
 
-            List<WebElement> accordionButtons = webDriver.findElements(targetAccordionButtonsLocator);
-            for (WebElement accordionButton : accordionButtons) {
+        List<WebElement> accordionButtons = webDriver.findElements(targetAccordionButtonsLocator);
+        for (int i = 0; i < accordionButtons.size(); i++) {
+            WebElement accordionButton = accordionButtons.get(i);
+            try {
+                webDriverWait.until(ExpectedConditions.elementToBeClickable(accordionButton));
                 accordionButton.click();
 
                 WebElement collapsePanel = accordionButton.findElement(collapsePanelLocator);
                 webDriverWait.until(ExpectedConditions.attributeContains(collapsePanel, "opacity", "1"));
+            } catch (TimeoutException ex) {
+                results.put(i, false);
             }
-
-            return true;
-        } catch (TimeoutException ex) {
-            return false;
         }
+
+        return results;
     }
 }

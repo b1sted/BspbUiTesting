@@ -1,5 +1,8 @@
 package ru.basted.bspbuitesting.tests;
 
+import java.util.Map;
+
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,10 +17,19 @@ public class CurrencyTest extends BaseTest {
         CurrencyPage currencyPage = new CurrencyPage(webDriver);
 
         mainPage.clickBuyCurrency();
-        Assertions.assertTrue(currencyPage.isCurrencyPageOpened(),
-                "Страница обмена валют не была открыта!");
+        boolean isOpened = currencyPage.isCurrencyPageOpened();
+        Assertions.assertTrue(isOpened, "Страница обмена валют не была открыта!");
 
-        Assertions.assertTrue(currencyPage.unfoldQuestionsAndVerify(),
-                "Раскрывающийся список вопросов не раскрылся!");
+        Map<Integer, Boolean> unfoldAccordionStatuses = currencyPage.unfoldQuestionsAndVerify();
+        SoftAssertions.assertSoftly(softly -> {
+            unfoldAccordionStatuses.forEach((accordionButtonId, isSuccess) -> {
+                softly.assertThat(isSuccess)
+                        .withFailMessage(
+                                "AccordionButton №%d на странице 'Обмен валюты' в разделе 'Вопросы' не найден/не открылся",
+                                accordionButtonId
+                        )
+                        .isTrue();
+            });
+        });
     }
 }
