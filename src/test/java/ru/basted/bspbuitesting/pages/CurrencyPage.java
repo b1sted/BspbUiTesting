@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,6 +20,8 @@ public class CurrencyPage extends BasePage {
     private final WebDriverWait shortWait;
 
     private final By officeSelectLocator = By.cssSelector("div.chakra-tabs__tab-panel:not([hidden]) select");
+
+    private final By exchangeAmountInputsLocator = By.cssSelector("div.chakra-tabs__tab-panel:not([hidden]) input");
 
     private final By questionsTabLocator = By.xpath("//button[normalize-space()='Вопросы']");
     private final By questionsAccordionButtonsLocator = By.cssSelector(
@@ -40,6 +43,30 @@ public class CurrencyPage extends BasePage {
 
         dropdown.selectByVisibleText(officeName);
         return dropdown.getFirstSelectedOption().getText();
+    }
+
+    public Map<Integer, String> inputCurrency(String query) {
+        Map<Integer, String> results = new HashMap<>();
+
+        List<WebElement> currencyInputBoxes =
+                webDriverWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(exchangeAmountInputsLocator));
+        for (int i = 0; i < currencyInputBoxes.size(); i++) {
+            WebElement currencyInputBox = currencyInputBoxes.get(i);
+
+            try {
+                shortWait.until(ExpectedConditions.elementToBeClickable(currencyInputBox));
+
+                currencyInputBox.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+                currencyInputBox.sendKeys(query);
+                currencyInputBox.sendKeys(Keys.ENTER);
+
+                results.put(i, currencyInputBox.getAttribute("value"));
+            } catch (TimeoutException ex) {
+                results.put(i, null);
+            }
+        }
+
+        return results;
     }
 
     public Map<Integer, Boolean> unfoldQuestionsAndVerify() {

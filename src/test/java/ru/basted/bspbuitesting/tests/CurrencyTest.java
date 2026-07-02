@@ -26,6 +26,11 @@ public class CurrencyTest extends BaseTest {
         String actualOffice = currencyPage.selectOffice(expectedOffice);
         Assertions.assertThat(actualOffice).isEqualToIgnoringCase(expectedOffice);
 
+        String query = "10000";
+        String expectedOutput = query.replaceAll("(?<=\\d)(?=(\\d{3})+(?!\\d))", " ");
+        Map<Integer, String> inputCurrencyStatuses = currencyPage.inputCurrency(query);
+        UiValidationSteps.verifyAllValues(softAssertions, inputCurrencyStatuses, expectedOutput);
+
         Map<Integer, Boolean> unfoldAccordionStatuses = currencyPage.unfoldQuestionsAndVerify();
         UiValidationSteps.verifyAllStatuses(softAssertions, unfoldAccordionStatuses,
                 "AccordionButton №%d на странице обмена валют в разделе 'Вопросы' не раскрылся");
