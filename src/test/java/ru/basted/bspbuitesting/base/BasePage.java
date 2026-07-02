@@ -20,9 +20,7 @@ public abstract class BasePage {
         this.webDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
     }
 
-    public void clickOnElement(By webElementLocator) {
-        WebElement webElement = webDriverWait.until(ExpectedConditions.elementToBeClickable(webElementLocator));
-
+    public void clickOnElement(WebElement webElement) {
         try {
             webElement.click();
         } catch (ElementClickInterceptedException e) {
@@ -31,5 +29,10 @@ public abstract class BasePage {
                     .click()
                     .perform();
         }
+    }
+
+    public void clickOnElement(By webElementLocator) {
+        WebElement webElement = webDriverWait.until(ExpectedConditions.elementToBeClickable(webElementLocator));
+        clickOnElement(webElement);
     }
 }
