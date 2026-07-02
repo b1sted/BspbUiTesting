@@ -32,12 +32,4 @@ public abstract class BasePage {
                     .perform();
         }
     }
-
-    public boolean isPageOpened(String fraction) {
-        try {
-            return webDriverWait.until(ExpectedConditions.urlContains(fraction));
-        } catch (TimeoutException ex) {
-            return false;
-        }
-    }
 }
