@@ -30,4 +30,15 @@ public abstract class UiValidationSteps {
                         .withFailMessage(errorMessage, elementIndex)
                         .isTrue());
     }
+
+    public static void verifyAllValues(
+            SoftAssertions softAssertions,
+            Map<Integer, String> outputs,
+            String expectedOutput
+    ) {
+        outputs.forEach((elementIndex, outputText) ->
+                softAssertions.assertThat(outputText)
+                        .as("Элемент №%d не содержит ожидаемое значение", elementIndex)
+                        .containsIgnoringCase(expectedOutput));
+    }
 }
