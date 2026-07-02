@@ -1,23 +1,27 @@
 package ru.basted.bspbuitesting.tests;
 
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ru.basted.bspbuitesting.base.BaseTest;
 import ru.basted.bspbuitesting.pages.MainPage;
 import ru.basted.bspbuitesting.pages.SearchPage;
+import ru.basted.bspbuitesting.steps.UiValidationSteps;
 
 public class SearchTest extends BaseTest {
     @Test
-    public void testSearch() {
+    @DisplayName("Проверка поиска по запросу на странице 'Поиск'")
+    public void should_ReturnResults_When_QueryIsSearched() {
         MainPage mainPage = new MainPage(webDriver);
         SearchPage searchPage = new SearchPage(webDriver);
 
         mainPage.clickSearchButton();
-        Assertions.assertTrue(searchPage.isSearchPageOpened(),
-                "Страница поиска не была открыта!");
+        UiValidationSteps.verifyCurrentUrlContains(webDriver, "/search");
 
-        Assertions.assertTrue(searchPage.searchAndVerifyResults("ВЭД"),
-                "Поиск не удался: счетчик результатов поиска так и остался равным нулю!");
+        boolean isSearchSuccessful = searchPage.isSearchSuccessful("ВЭД");
+        Assertions.assertThat(isSearchSuccessful)
+                .withFailMessage("Поиск не удался: счетчик результатов поиска так и остался равным нулю!")
+                .isTrue();
     }
 }

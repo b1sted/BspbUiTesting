@@ -17,11 +17,7 @@ public class SearchPage extends BasePage {
         super(webDriver);
     }
 
-    public boolean isSearchPageOpened() {
-        return isPageOpened("/search");
-    }
-
-    public boolean searchAndVerifyResults(String query) {
+    public boolean isSearchSuccessful(String query) {
         WebElement searchBox = webDriverWait.until(ExpectedConditions.elementToBeClickable(searchBoxLocator));
 
         searchBox.sendKeys(query);

@@ -4,13 +4,17 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
-public class BaseTest {
+public abstract class BaseTest {
     protected WebDriver webDriver;
 
     @BeforeEach
     public void setup() {
-        webDriver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--incognito");
+
+        webDriver = new ChromeDriver(options);
         webDriver.manage().window().maximize();
         webDriver.get("https://bspb.ru");
     }

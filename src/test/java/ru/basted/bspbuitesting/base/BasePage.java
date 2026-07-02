@@ -11,7 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class BasePage {
+public abstract class BasePage {
     protected final WebDriver webDriver;
     protected final WebDriverWait webDriverWait;
 
@@ -20,9 +20,7 @@ public class BasePage {
         this.webDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
     }
 
-    public void clickOnElement(By webElementLocator) {
-        WebElement webElement = webDriverWait.until(ExpectedConditions.elementToBeClickable(webElementLocator));
-
+    public void clickOnElement(WebElement webElement) {
         try {
             webElement.click();
         } catch (ElementClickInterceptedException e) {
@@ -33,11 +31,8 @@ public class BasePage {
         }
     }
 
-    public boolean isPageOpened(String fraction) {
-        try {
-            return webDriverWait.until(ExpectedConditions.urlContains(fraction));
-        } catch (TimeoutException ex) {
-            return false;
-        }
+    public void clickOnElement(By webElementLocator) {
+        WebElement webElement = webDriverWait.until(ExpectedConditions.elementToBeClickable(webElementLocator));
+        clickOnElement(webElement);
     }
 }
