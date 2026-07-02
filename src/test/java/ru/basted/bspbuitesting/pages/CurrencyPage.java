@@ -10,12 +10,15 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import ru.basted.bspbuitesting.base.BasePage;
 
 public class CurrencyPage extends BasePage {
     private final WebDriverWait shortWait;
+
+    private final By officeSelectLocator = By.cssSelector("div.chakra-tabs__tab-panel:not([hidden]) select");
 
     private final By questionsTabLocator = By.xpath("//button[normalize-space()='Вопросы']");
     private final By questionsAccordionButtonsLocator = By.cssSelector(
@@ -31,8 +34,12 @@ public class CurrencyPage extends BasePage {
         this.shortWait = new WebDriverWait(webDriver, Duration.ofSeconds(2));
     }
 
-    public boolean isCurrencyPageOpened() {
-        return isPageOpened("/finance/exchange");
+    public String selectOffice(String officeName) {
+        WebElement selectField = webDriverWait.until(ExpectedConditions.elementToBeClickable(officeSelectLocator));
+        Select dropdown = new Select(selectField);
+
+        dropdown.selectByVisibleText(officeName);
+        return dropdown.getFirstSelectedOption().getText();
     }
 
     public Map<Integer, Boolean> unfoldQuestionsAndVerify() {
