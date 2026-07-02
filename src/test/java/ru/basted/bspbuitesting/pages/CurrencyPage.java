@@ -23,6 +23,14 @@ public class CurrencyPage extends BasePage {
 
     private final By exchangeAmountInputsLocator = By.cssSelector("div.chakra-tabs__tab-panel:not([hidden]) input");
 
+    private final By currencyChoiceButtonsLocator = By.cssSelector(
+            "div.chakra-tabs__tab-panel:not([hidden]) button[id*='menu-button']"
+    );
+    private final By euroOptionInCurrencyMenuLocator = By.xpath(
+            "//div[contains(@id, 'menu-list') and not(@hidden)]//button[contains(text(), 'Евро')]"
+    );
+    private final By euroLabelInCurrencyChoiceMenuLocator = By.xpath(".//p[contains(text(), 'Евро')]");
+
     private final By questionsTabLocator = By.xpath("//button[normalize-space()='Вопросы']");
     private final By questionsAccordionButtonsLocator = By.cssSelector(
             "div.chakra-tabs__tab-panel:not([hidden]) button.chakra-accordion__button"
@@ -61,6 +69,32 @@ public class CurrencyPage extends BasePage {
                 currencyInputBox.sendKeys(Keys.ENTER);
 
                 results.put(i, currencyInputBox.getAttribute("value"));
+            } catch (TimeoutException ex) {
+                results.put(i, null);
+            }
+        }
+
+        return results;
+    }
+
+    public Map<Integer, String> selectCurrencies() {
+        Map<Integer, String> results = new HashMap<>();
+
+        List<WebElement> currencyChoiceMenus =
+                webDriverWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(currencyChoiceButtonsLocator));
+        List<WebElement> euroInChoiceMenus = webDriver.findElements(euroOptionInCurrencyMenuLocator);
+        for (int i = 0; i < currencyChoiceMenus.size(); i++) {
+            WebElement currencyChoiceMenu = currencyChoiceMenus.get(i);
+            try {
+                shortWait.until(ExpectedConditions.elementToBeClickable(currencyChoiceMenu));
+                currencyChoiceMenu.click();
+
+                WebElement euroInCurrentCurrencyChoiceMenu =
+                        shortWait.until(ExpectedConditions.elementToBeClickable(euroInChoiceMenus.get(i)));
+                euroInCurrentCurrencyChoiceMenu.click();
+
+                String actualText = currencyChoiceMenu.findElement(euroLabelInCurrencyChoiceMenuLocator).getText();
+                results.put(i, actualText);
             } catch (TimeoutException ex) {
                 results.put(i, null);
             }

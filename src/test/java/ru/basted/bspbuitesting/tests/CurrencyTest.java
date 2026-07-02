@@ -31,6 +31,9 @@ public class CurrencyTest extends BaseTest {
         Map<Integer, String> inputCurrencyStatuses = currencyPage.inputCurrency(query);
         UiValidationSteps.verifyAllValues(softAssertions, inputCurrencyStatuses, expectedOutput);
 
+        Map<Integer, String> currencyChoiceStatutes = currencyPage.selectCurrencies();
+        UiValidationSteps.verifyAllValues(softAssertions, currencyChoiceStatutes, "евро");
+
         Map<Integer, Boolean> unfoldAccordionStatuses = currencyPage.unfoldQuestionsAndVerify();
         UiValidationSteps.verifyAllStatuses(softAssertions, unfoldAccordionStatuses,
                 "AccordionButton №%d на странице обмена валют в разделе 'Вопросы' не раскрылся");
