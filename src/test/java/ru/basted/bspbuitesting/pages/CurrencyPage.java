@@ -10,6 +10,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -87,11 +88,11 @@ public class CurrencyPage extends BasePage {
             WebElement currencyChoiceMenu = currencyChoiceMenus.get(i);
             try {
                 shortWait.until(ExpectedConditions.elementToBeClickable(currencyChoiceMenu));
-                currencyChoiceMenu.click();
+                clickOnElement(currencyChoiceMenu);
 
                 WebElement euroInCurrentCurrencyChoiceMenu =
                         shortWait.until(ExpectedConditions.elementToBeClickable(euroInChoiceMenus.get(i)));
-                euroInCurrentCurrencyChoiceMenu.click();
+                clickOnElement(euroInCurrentCurrencyChoiceMenu);
 
                 String actualText = currencyChoiceMenu.findElement(euroLabelInCurrencyChoiceMenuLocator).getText();
                 results.put(i, actualText);
@@ -113,7 +114,7 @@ public class CurrencyPage extends BasePage {
             WebElement accordionButton = accordionButtons.get(i);
             try {
                 shortWait.until(ExpectedConditions.elementToBeClickable(accordionButton));
-                accordionButton.click();
+                clickOnElement(accordionButton);
 
                 WebElement collapsePanel = accordionButton.findElement(accordionCollapsePanelLocator);
                 shortWait.until(ExpectedConditions.attributeContains(collapsePanel, "opacity", "1"));
