@@ -1,5 +1,6 @@
 package ru.basted.bspbuitesting.pages;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +10,13 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import ru.basted.bspbuitesting.base.BasePage;
 
 public class CurrencyPage extends BasePage {
+    private final WebDriverWait shortWait;
+
     private final By questionsTabLocator = By.xpath("//button[normalize-space()='Вопросы']");
     private final By questionsAccordionButtonsLocator = By.cssSelector(
             "div.chakra-tabs__tab-panel:not([hidden]) button.chakra-accordion__button"
@@ -23,6 +27,8 @@ public class CurrencyPage extends BasePage {
 
     public CurrencyPage(WebDriver webDriver) {
         super(webDriver);
+
+        this.shortWait = new WebDriverWait(webDriver, Duration.ofSeconds(2));
     }
 
     public boolean isCurrencyPageOpened() {
@@ -38,11 +44,11 @@ public class CurrencyPage extends BasePage {
         for (int i = 0; i < accordionButtons.size(); i++) {
             WebElement accordionButton = accordionButtons.get(i);
             try {
-                webDriverWait.until(ExpectedConditions.elementToBeClickable(accordionButton));
+                shortWait.until(ExpectedConditions.elementToBeClickable(accordionButton));
                 accordionButton.click();
 
                 WebElement collapsePanel = accordionButton.findElement(accordionCollapsePanelLocator);
-                webDriverWait.until(ExpectedConditions.attributeContains(collapsePanel, "opacity", "1"));
+                shortWait.until(ExpectedConditions.attributeContains(collapsePanel, "opacity", "1"));
             } catch (TimeoutException ex) {
                 results.put(i, false);
             }
