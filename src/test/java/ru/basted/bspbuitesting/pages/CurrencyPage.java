@@ -10,7 +10,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,8 +17,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.basted.bspbuitesting.base.BasePage;
 
 public class CurrencyPage extends BasePage {
-    private final WebDriverWait shortWait;
-
     private final By officeSelectLocator = By.cssSelector("div.chakra-tabs__tab-panel:not([hidden]) select");
 
     private final By exchangeAmountInputsLocator = By.cssSelector("div.chakra-tabs__tab-panel:not([hidden]) input");
@@ -42,8 +39,6 @@ public class CurrencyPage extends BasePage {
 
     public CurrencyPage(WebDriver webDriver) {
         super(webDriver);
-
-        this.shortWait = new WebDriverWait(webDriver, Duration.ofSeconds(2));
     }
 
     public String selectOffice(String officeName) {
@@ -63,7 +58,7 @@ public class CurrencyPage extends BasePage {
             WebElement currencyInputBox = currencyInputBoxes.get(i);
 
             try {
-                shortWait.until(ExpectedConditions.elementToBeClickable(currencyInputBox));
+                webDriverShortWait.until(ExpectedConditions.elementToBeClickable(currencyInputBox));
 
                 currencyInputBox.sendKeys(Keys.chord(Keys.CONTROL, "a"));
                 currencyInputBox.sendKeys(query);
@@ -87,11 +82,11 @@ public class CurrencyPage extends BasePage {
         for (int i = 0; i < currencyChoiceMenus.size(); i++) {
             WebElement currencyChoiceMenu = currencyChoiceMenus.get(i);
             try {
-                shortWait.until(ExpectedConditions.elementToBeClickable(currencyChoiceMenu));
+                webDriverShortWait.until(ExpectedConditions.elementToBeClickable(currencyChoiceMenu));
                 clickOnElement(currencyChoiceMenu);
 
                 WebElement euroInCurrentCurrencyChoiceMenu =
-                        shortWait.until(ExpectedConditions.elementToBeClickable(euroInChoiceMenus.get(i)));
+                        webDriverShortWait.until(ExpectedConditions.elementToBeClickable(euroInChoiceMenus.get(i)));
                 clickOnElement(euroInCurrentCurrencyChoiceMenu);
 
                 String actualText = currencyChoiceMenu.findElement(euroLabelInCurrencyChoiceMenuLocator).getText();
@@ -113,11 +108,11 @@ public class CurrencyPage extends BasePage {
         for (int i = 0; i < accordionButtons.size(); i++) {
             WebElement accordionButton = accordionButtons.get(i);
             try {
-                shortWait.until(ExpectedConditions.elementToBeClickable(accordionButton));
+                webDriverShortWait.until(ExpectedConditions.elementToBeClickable(accordionButton));
                 clickOnElement(accordionButton);
 
                 WebElement collapsePanel = accordionButton.findElement(accordionCollapsePanelLocator);
-                shortWait.until(ExpectedConditions.attributeContains(collapsePanel, "opacity", "1"));
+                webDriverShortWait.until(ExpectedConditions.attributeContains(collapsePanel, "opacity", "1"));
             } catch (TimeoutException ex) {
                 results.put(i, false);
             }
