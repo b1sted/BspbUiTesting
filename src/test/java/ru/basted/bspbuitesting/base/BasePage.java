@@ -14,10 +14,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public abstract class BasePage {
     protected final WebDriver webDriver;
     protected final WebDriverWait webDriverWait;
+    protected final WebDriverWait webDriverShortWait;
 
     public BasePage(WebDriver webDriver) {
         this.webDriver = webDriver;
         this.webDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        this.webDriverShortWait = new WebDriverWait(webDriver, Duration.ofSeconds(2));
     }
 
     public void clickOnElement(WebElement webElement) {
