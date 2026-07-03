@@ -3,6 +3,7 @@ package ru.basted.bspbuitesting.pages;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,10 +23,12 @@ public class MainPage extends BasePage {
         super(webDriver);
     }
 
+    @Step("Нажатие на кнопку поиска")
     public void clickSearchButton() {
         clickOnElement(searchSvgLocator);
     }
 
+    @Step("Нажатие на все рекламные элементы")
     public Map<Integer, String> clickOnAllAds() {
         Map<Integer, String> results = new HashMap<>();
         String baseUrl = webDriver.getCurrentUrl();
@@ -53,6 +56,7 @@ public class MainPage extends BasePage {
         return results;
     }
 
+    @Step("Нажатие на кнопку переадресации на страницу обмена валют")
     public void clickBuyCurrency() {
         clickOnElement(buyCurrencyLocator);
     }
