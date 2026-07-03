@@ -2,6 +2,9 @@ package ru.basted.bspbuitesting.tests;
 
 import java.util.Map;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +16,8 @@ import ru.basted.bspbuitesting.pages.CurrencyPage;
 import ru.basted.bspbuitesting.pages.MainPage;
 import ru.basted.bspbuitesting.steps.UiValidationSteps;
 
+@Epic("Страница обмена валют")
+@Feature("Проверка работоспособности элементов")
 public class CurrencyTest extends BaseTest {
     @BeforeEach
     public void setupCurrencyPage() {
@@ -24,6 +29,7 @@ public class CurrencyTest extends BaseTest {
 
     @Test
     @DisplayName("Выбор офиса в select блоке раздела 'Наличный обмен'")
+    @Story("Выбор офиса-обменника")
     public void should_ReturnSelectedOfficeName_When_OfficeIsSelected() {
         CurrencyPage currencyPage = new CurrencyPage(webDriver);
 
@@ -34,6 +40,7 @@ public class CurrencyTest extends BaseTest {
 
     @Test
     @DisplayName("Проверка ввода количества валюты в разделе 'Наличный обмен'")
+    @Story("Ввод суммы для конвертации")
     public void should_DisplayFormattedAmount_When_CurrencyAmountIsEntered() {
         CurrencyPage currencyPage = new CurrencyPage(webDriver);
         SoftAssertions softAssertions = new SoftAssertions();
@@ -49,6 +56,7 @@ public class CurrencyTest extends BaseTest {
 
     @Test
     @DisplayName("Проверка смены валюты в select блоке раздела 'Наличный обмен'")
+    @Story("Выбор валюты для обмена")
     public void should_DisplayEuro_When_CurrencyIsSelected() {
         CurrencyPage currencyPage = new CurrencyPage(webDriver);
         SoftAssertions softAssertions = new SoftAssertions();
@@ -61,6 +69,7 @@ public class CurrencyTest extends BaseTest {
 
     @Test
     @DisplayName("Проверка раскрытия аккордеона в разделе 'Вопросы'")
+    @Story("Раскрытие аккордеона вопросов")
     public void should_ExpandPanel_When_AccordionButtonIsClicked() {
         CurrencyPage currencyPage = new CurrencyPage(webDriver);
         SoftAssertions softAssertions = new SoftAssertions();
