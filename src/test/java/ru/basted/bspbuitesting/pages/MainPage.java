@@ -5,6 +5,7 @@ import java.util.Map;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,7 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import ru.basted.bspbuitesting.base.BasePage;
 
 public class MainPage extends BasePage {
-    private final By searchSvgLocator = By.cssSelector("nav a[href='/search'] svg.chakra-icon");
+    private final By searchSvgLocator = By.cssSelector("nav a[href='/search']");
 
     private final By adsLocator = By.xpath("(//main//div[contains(@class, 'container')])[1]//a");
     private static final String AD_XPATH_TEMPLATE = "((//main//div[contains(@class, 'container')])[1]//a)[%d]";
@@ -25,7 +26,8 @@ public class MainPage extends BasePage {
 
     @Step("Нажатие на кнопку поиска")
     public void clickSearchButton() {
-        clickOnElement(searchSvgLocator);
+        WebElement searchIcon = webDriverWait.until(ExpectedConditions.presenceOfElementLocated(searchSvgLocator));
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].click();", searchIcon);
     }
 
     @Step("Нажатие на все рекламные элементы")
