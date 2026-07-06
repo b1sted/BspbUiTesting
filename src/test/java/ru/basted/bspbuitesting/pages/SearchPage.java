@@ -1,5 +1,6 @@
 package ru.basted.bspbuitesting.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
@@ -17,6 +18,7 @@ public class SearchPage extends BasePage {
         super(webDriver);
     }
 
+    @Step("Выполнение поискового запроса")
     public boolean isSearchSuccessful(String query) {
         WebElement searchBox = webDriverWait.until(ExpectedConditions.elementToBeClickable(searchBoxLocator));
 

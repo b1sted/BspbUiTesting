@@ -1,10 +1,10 @@
 package ru.basted.bspbuitesting.pages;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
@@ -12,7 +12,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import ru.basted.bspbuitesting.base.BasePage;
 
@@ -41,6 +40,7 @@ public class CurrencyPage extends BasePage {
         super(webDriver);
     }
 
+    @Step("Выбор офиса-обменника")
     public String selectOffice(String officeName) {
         WebElement selectField = webDriverWait.until(ExpectedConditions.elementToBeClickable(officeSelectLocator));
         Select dropdown = new Select(selectField);
@@ -49,6 +49,7 @@ public class CurrencyPage extends BasePage {
         return dropdown.getFirstSelectedOption().getText();
     }
 
+    @Step("Ввод количества валюты")
     public Map<Integer, String> inputCurrency(String query) {
         Map<Integer, String> results = new HashMap<>();
 
@@ -73,6 +74,7 @@ public class CurrencyPage extends BasePage {
         return results;
     }
 
+    @Step("Выбор валют")
     public Map<Integer, String> selectCurrencies() {
         Map<Integer, String> results = new HashMap<>();
 
@@ -99,6 +101,7 @@ public class CurrencyPage extends BasePage {
         return results;
     }
 
+    @Step("Раскрытие аккордеона вопросов")
     public Map<Integer, Boolean> unfoldQuestionsAndVerify() {
         Map<Integer, Boolean> results = new HashMap<>();
         clickOnElement(questionsTabLocator);

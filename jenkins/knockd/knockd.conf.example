@@ -1,0 +1,11 @@
+[options]
+        UseSyslog
+        Interface = {interface}
+
+[SSH]
+        sequence = {random_port1},{random_port2},{random_port3}
+        seq_timeout = 5
+        tcpflags = syn
+        start_command = /sbin/iptables -I INPUT -s %IP% -p tcp --dport {ssh_port} -j ACCEPT
+        stop_command = /sbin/iptables -D INPUT -s %IP% -p tcp --dport {ssh_port} -j ACCEPT
+        cmd_timeout = 60

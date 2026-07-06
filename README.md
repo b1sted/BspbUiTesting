@@ -11,3 +11,10 @@
 - Selenium
 - Junit
 - Gradle (DSL Groovy)
+- Jenkins
+
+## CI/CD
+
+Конфигурация CI-сервера (Jenkins в Docker, Nginx, systemd, port knocking) — в [`jenkins/`](./jenkins/README.md).
+
+К прогону тестов и самому проекту отношения не имеет, нужна только при развёртывании/обслуживании VDS.
