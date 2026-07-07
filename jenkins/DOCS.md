@@ -12,7 +12,7 @@
     <a href="#автозапуск">Автозапуск</a> • <br>
     <a href="#файрвол">Файрвол</a> •
     <a href="#защита-ssh">Защита SSH</a> •
-    <a href="#пример-пайплайна-jenkins">Пример пайплайна Jenkins</a>
+    <a href="#пайплайн-jenkins">Пайплайн Jenkins</a>
 </p>
 <hr>
 
@@ -171,32 +171,10 @@ knock <ip_сервера> <port1> <port2> <port3>
 ssh user@<ip_сервера>
 ```
 
-## Пример пайплайна Jenkins
+## Пайплайн Jenkins
 
-Рабочий pipeline: [`pipeline-example/Jenkinsfile.example`](./pipeline-example/Jenkinsfile.example). В репозитории — для истории; исполняется как содержимое поля **Pipeline script** в job'е `BspbUiTesting` (без SCM).
-
-### Требование к workspace
-
-Workspace job'а: `/opt/jenkins/jenkins_home/workspace/BspbUiTesting`. Должен содержать проект целиком — а проект как репозиторий включает в себя и `jenkins/`:
-
-```
-BspbUiTesting/            (= workspace)
-├── build.gradle
-├── settings.gradle
-├── gradlew
-├── gradlew.bat
-├── README.md
-├── src/
-│   └── ...
-└── jenkins/              # Присутствует, т.к. чекаутится весь репозиторий, но роли не играет
-```
-
-Присутствие или отсутствие `jenkins/` в workspace никак не влияет на прогон — шаги пайплайна к ней не обращаются (это конфигурация самого CI-сервера, а не часть тестируемого проекта).
-
-В пайплайне стоит `skipDefaultCheckout()` — Jenkins не тянет код сам. Сборка и тесты при этом полноценные: агент в Docker, `./gradlew clean test`, отчёт в Allure. Ручной шаг только один — доставка актуального кода в workspace (`git pull`/`rsync`). Если тесты гоняются по старой версии — проверяйте сначала это.
+`Jenkinsfile` лежит в корне репозитория [`BspbUiTesting`](https://github.com/b1sted/BspbUiTesting). Job в Jenkins настроен как **Pipeline script from SCM**, указывающий на этот репозиторий и файл — код чекаутится автоматически при каждом запуске, ручной синхронизации workspace не требуется.
 
 ### Требования к окружению
 
-Плагин **Allure Jenkins Plugin**, инструмент `allure-cli` (Manage Jenkins → Tools), Docker-агент с доступом к `docker.sock`.
-
-При изменении пайплайна править в двух местах: Jenkins UI (исполняемая версия) и `pipeline-example/Jenkinsfile.example` в репозитории.
+Плагин **Allure Jenkins Plugin**, инструмент `allure-cli` (Manage Jenkins → Tools), Docker-агент с доступом к `docker.sock`, настроенный GitHub Server (Manage Jenkins → System → GitHub) с credential, имеющим права `repo:status` — нужен для простановки статуса сборки в GitHub.

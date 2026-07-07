@@ -16,10 +16,8 @@ jenkins
 │   └── default.conf
 ├── systemd/
 │   └── jenkins-compose.service
-├── knockd/
-│   └── knockd.conf.example
-└── pipeline-example/
-    └── Jenkinsfile.example
+└── knockd/
+    └── knockd.conf.example
 ```
 
 ## Куда что кладётся на сервере
@@ -30,7 +28,6 @@ jenkins
 | `nginx/default.conf`                   | `/opt/jenkins/nginx/default.conf`             | Монтируется в контейнер nginx |
 | `systemd/jenkins-compose.service`      | `/etc/systemd/system/jenkins-compose.service` | Автозапуск стека при загрузке |
 | `knockd/knockd.conf.example`           | `/etc/knockd.conf` (с реальными портами)      | Port knocking для SSH         |
-| `pipeline-example/Jenkinsfile.example` | Вставляется в Pipeline script в Jenkins UI    | Рабочий pipeline              |
 
 Итоговый `/opt/jenkins`:
 
@@ -86,30 +83,15 @@ sudo cp /tmp/repo/jenkins/knockd/knockd.conf.example /etc/knockd.conf
 # Отредактировать /etc/knockd.conf — заменить плейсхолдеры на реальные порты
 ```
 
-Отдельно — наполнить workspace job'а `BspbUiTesting` (job должен быть уже создан в Jenkins UI, см. [DOCS.md → «Пример пайплайна Jenkins»](DOCS.md#пример-пайплайна-jenkins)). Jenkins код сам не тянет (`skipDefaultCheckout()`), поэтому актуальность workspace — забота человека/скрипта. Проще всего сделать сам workspace git-клоном и потом просто `git pull`:
-
-```bash
-git clone https://github.com/b1sted/BspbUiTesting.git /opt/jenkins/jenkins_home/workspace/BspbUiTesting
-
-# Перед каждым запуском job'а:
-cd /opt/jenkins/jenkins_home/workspace/BspbUiTesting && git pull
-```
-
-Гонять `git pull` можно перед каждым запуском не глядя — если изменений нет, он просто ответит «Already up to date.» и ничего не сделает. А вот если пропустить его именно в тот раз, когда изменения были, job тихо прогонит тесты по старому коду.
-
-Альтернатива — копировать из уже склонированного `/tmp/repo` (`cp -r /tmp/repo/. .../BspbUiTesting/`). Но `cp` не подчищает workspace от файлов, которые пропали из новой версии проекта — это придётся делать вручную. `git pull` делает это сам.
-
 ## Что внутри
 
 | Компонент | Назначение                                                                             |
 |-----------|----------------------------------------------------------------------------------------|
 | `jenkins` | CI/CD-сервер, доступен только внутри docker-сети (8080)                                |
-| `nginx`   | reverse proxy + TLS, единственная точка входа снаружи (80/443, только с IP Cloudflare) |
+| `nginx`   | Reverse proxy + TLS, единственная точка входа снаружи (80/443, только с IP Cloudflare) |
 
 ## Job BspbUiTesting
 
-Запускается над содержимым `/opt/jenkins/jenkins_home/workspace/BspbUiTesting`. Полноценный CI (Docker-агент, `./gradlew clean test`, отчёт Allure), но доставка кода в workspace — ручная: в пайплайне стоит `skipDefaultCheckout()`, актуальность кода поддерживается вручную (`git pull`/`rsync`). Подробнее — [DOCS.md → «Пример пайплайна Jenkins»](DOCS.md#пример-пайплайна-jenkins).
+Настроен как Pipeline из SCM, указывающий на `Jenkinsfile` в корне репозитория `BspbUiTesting` (ветка `main`). Jenkins сам тянет код при каждом запуске — ручных действий с workspace не требуется.
 
-Директория `jenkins/` (конфигурация CI-сервера) попадает в workspace вместе со всем репозиторием при чекауте, но пайплайн её не читает.
-
-Перед деплоем на боевой сервер — обязательно раздел про безопасность в [DOCS.md](DOCS.md).
+Полноценный CI: Docker-агент, `./gradlew clean test`, отчёт Allure, простановка статуса сборки в GitHub через commit status API.
