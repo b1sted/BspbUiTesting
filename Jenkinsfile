@@ -1,4 +1,20 @@
-properties([githubProjectProperty(displayName: '', projectUrlStr: 'https://github.com/b1sted/BspbUiTesting/'), pipelineTriggers([GenericTrigger(causeString: 'Generic Cause', genericVariables: [[defaultValue: '', key: 'ref', regexpFilter: '', value: '$.ref']], regexpFilterExpression: 'refs/heads/main', regexpFilterText: '$ref', token: 'bspbuitesting', tokenCredentialId: '')])])
+properties([
+    githubProjectProperty(
+        displayName: '',
+        projectUrlStr: 'https://github.com/b1sted/BspbUiTesting/'
+    ),
+
+    pipelineTriggers([
+        GenericTrigger(
+            causeString: 'Generic Cause',
+            genericVariables: [[defaultValue: '', key: 'ref', regexpFilter: '', value: '$.ref']],
+            regexpFilterExpression: 'refs/heads/main',
+            regexpFilterText: '$ref',
+            token: 'bspbuitesting',
+            tokenCredentialId: ''
+        )
+    ])
+])
 
 pipeline {
     agent {
@@ -24,6 +40,12 @@ pipeline {
             }
         }
 
+        stage('Set Starter Status') {
+            steps {
+                setGitHubStatus('PENDING', 'Запуск Selenium тестов в headless-режиме...')
+            }
+        }
+
         stage('Test') {
             steps {
                 catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
@@ -35,4 +57,32 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            setGitHubStatus('SUCCESS', 'Все UI-тесты пройдены успешно.')
+        }
+
+        failure {
+            setGitHubStatus('FAILURE', 'Один или несколько Selenium тестов завершились ошибкой.')
+        }
+    }
+}
+
+def setGitHubStatus(String state, String message) {
+    step([
+        $class: 'GitHubCommitStatusSetter',
+        reposSource: [
+            $class: 'ManuallyEnteredRepositorySource',
+            url: 'https://github.com/b1sted/BspbUiTesting'
+        ],
+        contextSource: [
+            $class: 'ManuallyEnteredCommitContextSource',
+            context: 'Jenkins CI'
+        ],
+        statusResultSource: [
+            $class: 'ConditionalStatusResultSource',
+            results: [[$class: 'AnyBuildResult', state: state, message: message]]
+        ]
+    ])
 }
