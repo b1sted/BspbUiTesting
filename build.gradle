@@ -8,6 +8,18 @@ version = '0.1-alpha'
 
 repositories {
     mavenCentral()
+
+    maven {
+        name = 'GitHubPackages'
+        url = uri('https://maven.pkg.github.com/webrelab/layout_testing')
+        credentials {
+            username = System.getenv('GPR_USER') ?: project.findProperty('gpr.user')
+            password = System.getenv('GPR_KEY') ?: project.findProperty('gpr.key')
+        }
+        content {
+            includeGroup 'ru.webrelab'
+        }
+    }
 }
 
 allure {
@@ -34,6 +46,7 @@ dependencies {
     testImplementation 'org.junit.platform:junit-platform-suite'
 
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testImplementation 'ru.webrelab:layout_testing:0.3'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testRuntimeOnly "org.slf4j:slf4j-simple:${slf4jVersion}"
