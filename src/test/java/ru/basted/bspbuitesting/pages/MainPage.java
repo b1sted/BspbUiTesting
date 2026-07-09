@@ -12,7 +12,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import ru.basted.bspbuitesting.base.BasePage;
 
-public class MainPage extends BasePage {
+public class MainPage extends BasePage<MainPage> {
+    private static final String PAGE_URL = "https://bspb.ru";
+
     private final By searchSvgLocator = By.cssSelector("nav a[href='/search']");
 
     private final By adsLocator = By.xpath("(//main//div[contains(@class, 'container')])[1]//a");
@@ -22,6 +24,11 @@ public class MainPage extends BasePage {
 
     public MainPage(WebDriver webDriver) {
         super(webDriver);
+    }
+
+    @Override
+    protected String getUrl() {
+        return PAGE_URL;
     }
 
     @Step("Нажатие на кнопку поиска")

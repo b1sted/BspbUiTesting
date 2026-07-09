@@ -19,7 +19,6 @@ public abstract class BaseTest {
 
         webDriver = new ChromeDriver(options);
         webDriver.manage().window().maximize();
-        webDriver.get("https://bspb.ru");
     }
 
     @AfterEach

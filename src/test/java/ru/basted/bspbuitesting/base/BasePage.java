@@ -10,7 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class BasePage {
+public abstract class BasePage<T extends BasePage<T>> {
     protected final WebDriver webDriver;
     protected final WebDriverWait webDriverWait;
     protected final WebDriverWait webDriverShortWait;
@@ -19,6 +19,14 @@ public abstract class BasePage {
         this.webDriver = webDriver;
         this.webDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
         this.webDriverShortWait = new WebDriverWait(webDriver, Duration.ofSeconds(2));
+    }
+
+    protected abstract String getUrl();
+
+    @SuppressWarnings("unchecked")
+    public T open() {
+        webDriver.get(getUrl());
+        return (T) this;
     }
 
     public void clickOnElement(WebElement webElement) {

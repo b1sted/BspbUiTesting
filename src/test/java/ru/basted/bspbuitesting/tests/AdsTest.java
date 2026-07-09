@@ -19,7 +19,7 @@ public class AdsTest extends BaseTest {
     @DisplayName("Проверка перехода по рекламным ссылкам на главной странице")
     @Story("Переход по рекламным ссылкам")
     public void should_ChangeUrl_When_AdIsClicked() {
-        MainPage mainPage = new MainPage(webDriver);
+        MainPage mainPage = new MainPage(webDriver).open();
 
         Map<Integer, String> adUrlResults = mainPage.clickOnAllAds();
         SoftAssertions.assertSoftly(softly ->

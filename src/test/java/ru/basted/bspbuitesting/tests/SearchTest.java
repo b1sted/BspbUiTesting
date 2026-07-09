@@ -19,7 +19,7 @@ public class SearchTest extends BaseTest {
     @DisplayName("Проверка поиска по запросу на странице 'Поиск'")
     @Story("Выполнение поискового запроса")
     public void should_ReturnResults_When_QueryIsSearched() {
-        MainPage mainPage = new MainPage(webDriver);
+        MainPage mainPage = new MainPage(webDriver).open();
         SearchPage searchPage = new SearchPage(webDriver);
 
         mainPage.clickSearchButton();

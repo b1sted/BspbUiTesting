@@ -21,7 +21,7 @@ import ru.basted.bspbuitesting.steps.UiValidationSteps;
 public class CurrencyTest extends BaseTest {
     @BeforeEach
     public void setupCurrencyPage() {
-        MainPage mainPage = new MainPage(webDriver);
+        MainPage mainPage = new MainPage(webDriver).open();
 
         mainPage.clickBuyCurrency();
         UiValidationSteps.verifyCurrentUrlContains(webDriver, "/exchange");
