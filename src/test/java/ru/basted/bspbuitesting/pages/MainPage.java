@@ -15,10 +15,20 @@ import ru.basted.bspbuitesting.base.BasePage;
 public class MainPage extends BasePage<MainPage> {
     private static final String PAGE_URL = "https://bspb.ru";
 
+    private final By pageWrapperLocator = By.xpath("//div[@id='app-wrapper']");
+
+    private final By logoSvgLocator = By.xpath(
+            "//div[contains(@class, 'chakra-container')]//a[@href=\"/\"]//*[name()='svg']"
+    );
+
     private final By searchSvgLocator = By.cssSelector("nav a[href='/search']");
 
     private final By adsLocator = By.xpath("(//main//div[contains(@class, 'container')])[1]//a");
     private static final String AD_XPATH_TEMPLATE = "((//main//div[contains(@class, 'container')])[1]//a)[%d]";
+
+    private final By processButtonLocator = By.xpath(
+            "//a[contains(@href, 'deposits') and contains(normalize-space(), 'Оформить')]"
+    );
 
     private final By buyCurrencyLocator = By.xpath("//a[@href='/finance/exchange' and contains(text(),'валюту')]");
 
@@ -29,6 +39,18 @@ public class MainPage extends BasePage<MainPage> {
     @Override
     protected String getUrl() {
         return PAGE_URL;
+    }
+
+    public WebElement getWrapper() {
+        return webDriver.findElement(pageWrapperLocator);
+    }
+
+    public WebElement getLogo() {
+        return webDriver.findElement(logoSvgLocator);
+    }
+
+    public WebElement getProcessButton() {
+        return webDriver.findElement(processButtonLocator);
     }
 
     @Step("Нажатие на кнопку поиска")
