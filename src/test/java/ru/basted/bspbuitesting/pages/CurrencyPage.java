@@ -18,6 +18,8 @@ import ru.basted.bspbuitesting.base.BasePage;
 public class CurrencyPage extends BasePage<CurrencyPage> {
     private static final String PAGE_URL = "https://bspb.ru/finance/exchange";
 
+    private final By pageWrapperLocator = By.xpath("//div[@id='app-wrapper']");
+
     private final By officeSelectLocator = By.cssSelector("div.chakra-tabs__tab-panel:not([hidden]) select");
 
     private final By exchangeAmountInputsLocator = By.cssSelector("div.chakra-tabs__tab-panel:not([hidden]) input");
@@ -45,6 +47,10 @@ public class CurrencyPage extends BasePage<CurrencyPage> {
     @Override
     protected String getUrl() {
         return PAGE_URL;
+    }
+
+    public WebElement getWrapper() {
+        return webDriver.findElement(pageWrapperLocator);
     }
 
     @Step("Выбор офиса-обменника")
